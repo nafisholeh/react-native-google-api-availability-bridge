@@ -75,7 +75,8 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 		final int googlePlayServicesCheck = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this.getCurrentActivity());
 		switch (googlePlayServicesCheck) {
 			case ConnectionResult.SUCCESS:
-				return "success";
+				// return "success";
+				return "sukses";
 			case ConnectionResult.SERVICE_DISABLED:
 				return "disabled";
 			case ConnectionResult.SERVICE_INVALID:
@@ -84,6 +85,10 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 				return "missing";
 			case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
 				return "update";
+			case ConnectionResult.SERVICE_UPDATING:
+				return "updating";
+			case ConnectionResult.SERVICE_MISSING_PERMISSION:
+				return "permission_missing";
 		}
 		return "failure";
 	}
