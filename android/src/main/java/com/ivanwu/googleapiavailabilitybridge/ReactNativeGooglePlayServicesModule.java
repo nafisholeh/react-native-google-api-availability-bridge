@@ -41,18 +41,6 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 	public void promptGooglePlayUpdate(boolean allowUse) {
 		Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this.getCurrentActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0);
 
-		/*
-		Custom dialog maker...
-		AlertDialog.Builder builder = new AlertDialog.Builder(this.getCurrentActivity());
-		builder.setMessage("I am some message.").setTitle("Some Title");
-		builder.setNeutralButton("Update", new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int i) {
-		openPlayStore();
-		}
-		});
-
-		Dialog dialog = builder.create();*/
-
 		// Quit app if not user does not update play services
 		if(!allowUse) {
 			dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -71,23 +59,32 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 		openPlayStore();
 	}
 
+	private void promptServicePermissionResolution(status) {
+		try {
+			status.startResolutionForResult(reactContext.getCurrentActivity(), ConnectionResult.SERVICE_MISSING_PERMISSION)
+		} catch (e) {
+
+		}
+	}
+
 	private String checkGooglePlayServicesHelper() {
 		final int googlePlayServicesCheck = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this.getCurrentActivity());
 		switch (googlePlayServicesCheck) {
-			case ConnectionResult.SUCCESS:
-				// return "success";
-				return "sukses";
-			case ConnectionResult.SERVICE_DISABLED:
-				return "disabled";
-			case ConnectionResult.SERVICE_INVALID:
-				return "invalid";
-			case ConnectionResult.SERVICE_MISSING:
-				return "missing";
-			case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-				return "update";
-			case ConnectionResult.SERVICE_UPDATING:
-				return "updating";
-			case ConnectionResult.SERVICE_MISSING_PERMISSION:
+			// case ConnectionResult.SUCCESS:
+			// 	return "success";
+			// case ConnectionResult.SERVICE_DISABLED:
+			// 	return "disabled";
+			// case ConnectionResult.SERVICE_INVALID:
+			// 	return "invalid";
+			// case ConnectionResult.SERVICE_MISSING:
+			// 	return "missing";
+			// case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+			// 	return "update";
+			// case ConnectionResult.SERVICE_UPDATING:
+			// 	return "updating";
+			// case ConnectionResult.SERVICE_MISSING_PERMISSION:
+			default:
+				promptServicePermissionResolution(googlePlayServicesCheck);
 				return "permission_missing";
 		}
 		return "failure";
