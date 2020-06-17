@@ -1,19 +1,15 @@
 package com.ivanwu.googleapiavailabilitybridge;
 
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
-import java.util.Map;
-
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
 
 public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaModule {
 	public final ReactApplicationContext reactContext;
@@ -38,11 +34,21 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 	}
 
 	@ReactMethod
-	public void promptGooglePlayUpdate(boolean allowUse) {
-		Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this.getCurrentActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0);
+	public void promptGooglePlayUpdate(boolean allowCancel) {
+		showErrorDialog(ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, allowCancel);
+	}
+
+	private void showErrorDialog(int errorCode, boolean allowCancel) {
+		Dialog dialog = GoogleApiAvailability
+			.getInstance()
+			.getErrorDialog(
+				this.getCurrentActivity(),
+				errorCode,
+				0
+			);
 
 		// Quit app if not user does not update play services
-		if(!allowUse) {
+		if(allowCancel) {
 			dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialogInterface) {

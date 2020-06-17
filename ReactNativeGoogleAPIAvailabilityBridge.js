@@ -1,25 +1,24 @@
-'use strict';
+"use strict";
 
-var ReactNative = require('react-native')
-var Platform = ReactNative.Platform
-var GoogleAPIAvailability = ReactNative.NativeModules.ReactNativeGooglePlayServices;
+var ReactNative = require("react-native");
+var Platform = ReactNative.Platform;
+var GoogleAPIAvailability =
+  ReactNative.NativeModules.ReactNativeGooglePlayServices;
 
 class ReactNativeGoogleAPIAvailabilityBridge {
-	constructor() {
+  constructor() {}
 
-	}
+  checkGooglePlayServices(result) {
+    return GoogleAPIAvailability.checkGooglePlayServices(result);
+  }
 
-	checkGooglePlayServices(result) {
-		return GoogleAPIAvailability.checkGooglePlayServices(result);
-	}
+  promptGooglePlayUpdate(allowCancel) {
+    return GoogleAPIAvailability.promptGooglePlayUpdate(allowCancel);
+  }
 
-	promptGooglePlayUpdate(allowUse) {
-		return GoogleAPIAvailability.promptGooglePlayUpdate(allowUse);
-	}
-
-	openGooglePlayUpdate() {
-		return GoogleAPIAvailability.openGooglePlayUpdate();
-	}
+  openGooglePlayUpdate() {
+    return GoogleAPIAvailability.openGooglePlayUpdate();
+  }
 }
 
 module.exports = new ReactNativeGoogleAPIAvailabilityBridge();
