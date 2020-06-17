@@ -65,35 +65,26 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 		openPlayStore();
 	}
 
-	private void promptServicePermissionResolution(int status) {
-		try {
-			status.startResolutionForResult(reactContext.getCurrentActivity(), ConnectionResult.SERVICE_MISSING_PERMISSION)
-		} catch (Exception error) {
-			throw error;
-		}
-	}
-
 	private String checkGooglePlayServicesHelper() {
 		final int googlePlayServicesCheck = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this.getCurrentActivity());
 		switch (googlePlayServicesCheck) {
-			// case ConnectionResult.SUCCESS:
-			// 	return "success";
-			// case ConnectionResult.SERVICE_DISABLED:
-			// 	return "disabled";
-			// case ConnectionResult.SERVICE_INVALID:
-			// 	return "invalid";
-			// case ConnectionResult.SERVICE_MISSING:
-			// 	return "missing";
-			// case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-			// 	return "update";
-			// case ConnectionResult.SERVICE_UPDATING:
-			// 	return "updating";
-			// case ConnectionResult.SERVICE_MISSING_PERMISSION:
-			default:
-				promptServicePermissionResolution(googlePlayServicesCheck);
+			case ConnectionResult.SUCCESS:
+				return "success";
+			case ConnectionResult.SERVICE_DISABLED:
+				return "disabled";
+			case ConnectionResult.SERVICE_INVALID:
+				return "invalid";
+			case ConnectionResult.SERVICE_MISSING:
+				return "missing";
+			case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+				return "update";
+			case ConnectionResult.SERVICE_UPDATING:
+				return "updating";
+			case ConnectionResult.SERVICE_MISSING_PERMISSION:
 				return "permission_missing";
+			default:
+				return "failure";
 		}
-		return "failure";
 	}
 
 	// Opens Google Play Services with Play Store app
