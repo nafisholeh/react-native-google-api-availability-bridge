@@ -23,6 +23,10 @@ class ReactNativeGoogleAPIAvailabilityBridge {
   showServiceMissingDialog() {
     return GoogleAPIAvailability.showServiceMissingDialog();
   }
+
+  showServiceDisabledDialog() {
+    return GoogleAPIAvailability.showServiceDisabledDialog();
+  }
 }
 
 module.exports = new ReactNativeGoogleAPIAvailabilityBridge();
