@@ -2,6 +2,7 @@ package com.ivanwu.googleapiavailabilitybridge;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.net.Uri;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
