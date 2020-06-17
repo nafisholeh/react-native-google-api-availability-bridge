@@ -1,19 +1,15 @@
 package com.ivanwu.googleapiavailabilitybridge;
 
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
-import java.util.Map;
-
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
 
 public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaModule {
 	public final ReactApplicationContext reactContext;
@@ -38,23 +34,21 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 	}
 
 	@ReactMethod
-	public void promptGooglePlayUpdate(boolean allowUse) {
-		Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this.getCurrentActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0);
+	public void promptGooglePlayUpdate(boolean allowCancel) {
+		showErrorDialog(ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, allowCancel);
+	}
 
-		/*
-		Custom dialog maker...
-		AlertDialog.Builder builder = new AlertDialog.Builder(this.getCurrentActivity());
-		builder.setMessage("I am some message.").setTitle("Some Title");
-		builder.setNeutralButton("Update", new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int i) {
-		openPlayStore();
-		}
-		});
-
-		Dialog dialog = builder.create();*/
+	private void showErrorDialog(int errorCode, boolean allowCancel) {
+		Dialog dialog = GoogleApiAvailability
+			.getInstance()
+			.getErrorDialog(
+				this.getCurrentActivity(),
+				errorCode,
+				0
+			);
 
 		// Quit app if not user does not update play services
-		if(!allowUse) {
+		if(allowCancel) {
 			dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialogInterface) {
@@ -71,19 +65,33 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 		openPlayStore();
 	}
 
+	private void promptServicePermissionResolution(int status) {
+		try {
+			status.startResolutionForResult(reactContext.getCurrentActivity(), ConnectionResult.SERVICE_MISSING_PERMISSION)
+		} catch (Exception error) {
+			throw error;
+		}
+	}
+
 	private String checkGooglePlayServicesHelper() {
 		final int googlePlayServicesCheck = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this.getCurrentActivity());
 		switch (googlePlayServicesCheck) {
-			case ConnectionResult.SUCCESS:
-				return "success";
-			case ConnectionResult.SERVICE_DISABLED:
-				return "disabled";
-			case ConnectionResult.SERVICE_INVALID:
-				return "invalid";
-			case ConnectionResult.SERVICE_MISSING:
-				return "missing";
-			case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-				return "update";
+			// case ConnectionResult.SUCCESS:
+			// 	return "success";
+			// case ConnectionResult.SERVICE_DISABLED:
+			// 	return "disabled";
+			// case ConnectionResult.SERVICE_INVALID:
+			// 	return "invalid";
+			// case ConnectionResult.SERVICE_MISSING:
+			// 	return "missing";
+			// case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+			// 	return "update";
+			// case ConnectionResult.SERVICE_UPDATING:
+			// 	return "updating";
+			// case ConnectionResult.SERVICE_MISSING_PERMISSION:
+			default:
+				promptServicePermissionResolution(googlePlayServicesCheck);
+				return "permission_missing";
 		}
 		return "failure";
 	}
