@@ -38,6 +38,11 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 		showErrorDialog(ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, allowCancel);
 	}
 
+	@ReactMethod
+	public void showServiceMissingDialog() {
+		showErrorDialog(ConnectionResult.SERVICE_MISSING, false);
+	}
+
 	private void showErrorDialog(int errorCode, boolean allowCancel) {
 		Dialog dialog = GoogleApiAvailability
 			.getInstance()

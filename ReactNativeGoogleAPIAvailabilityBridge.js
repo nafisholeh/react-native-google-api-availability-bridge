@@ -19,6 +19,10 @@ class ReactNativeGoogleAPIAvailabilityBridge {
   openGooglePlayUpdate() {
     return GoogleAPIAvailability.openGooglePlayUpdate();
   }
+
+  showServiceMissingDialog() {
+    return GoogleAPIAvailability.showServiceMissingDialog();
+  }
 }
 
 module.exports = new ReactNativeGoogleAPIAvailabilityBridge();
