@@ -72,7 +72,7 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 			builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
-					finish();
+					reactContext.getCurrentActivity().finish();
 				}
 		 });	
 		}
