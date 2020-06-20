@@ -1,9 +1,11 @@
 package com.ivanwu.googleapiavailabilitybridge;
 
 import android.app.Dialog;
-import android.content.Intent;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
+
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -36,20 +38,41 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 
 	@ReactMethod
 	public void promptGooglePlayUpdate(boolean allowCancel) {
-		showErrorDialog(ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, allowCancel);
+		showGooglePlayDialog(ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, allowCancel);
 	}
 
 	@ReactMethod
 	public void showServiceMissingDialog() {
-		showErrorDialog(ConnectionResult.SERVICE_MISSING, false);
+		showGooglePlayDialog(ConnectionResult.SERVICE_MISSING, false);
 	}
 
 	@ReactMethod
 	public void showServiceDisabledDialog() {
-		showErrorDialog(ConnectionResult.SERVICE_DISABLED, false);
+		showGooglePlayDialog(ConnectionResult.SERVICE_DISABLED, false);
 	}
 
-	private void showErrorDialog(int errorCode, boolean allowCancel) {
+	@ReactMethod
+	public void showGooglePlayInvalid(String customDialogMsg, boolean allowCancel) {
+		showCustomDialog(customDialogMsg, allowCancel);
+	}
+
+	private void showCustomDialog(String customDialogMsg, boolean allowCancel) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.getCurrentActivity());
+
+		builder
+			.setMessage(customDialogMsg || "There is an unexpected error. Please check the installed Google Play Services.")
+			.setTitle("Google Play services")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					openPlayStore();
+				}
+			});
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
+	private void showGooglePlayDialog(int errorCode, boolean allowCancel) {
 		Dialog dialog = GoogleApiAvailability
 			.getInstance()
 			.getErrorDialog(

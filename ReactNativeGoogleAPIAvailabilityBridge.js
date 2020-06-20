@@ -27,6 +27,13 @@ class ReactNativeGoogleAPIAvailabilityBridge {
   showServiceDisabledDialog() {
     return GoogleAPIAvailability.showServiceDisabledDialog();
   }
+
+  showGooglePlayInvalid(customDialogMsg, allowCancel) {
+    return GoogleAPIAvailability.showGooglePlayInvalid(
+      customDialogMsg,
+      allowCancel
+    );
+  }
 }
 
 module.exports = new ReactNativeGoogleAPIAvailabilityBridge();
