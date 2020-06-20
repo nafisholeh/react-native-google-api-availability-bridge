@@ -59,8 +59,9 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 	private void showCustomDialog(String customDialogMsg, boolean allowCancel) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getCurrentActivity());
 
+		String message = customDialogMsg != null ? customDialogMsg : "There is an unexpected error. Please check the installed Google Play Services.";
 		builder
-			.setMessage(customDialogMsg || "There is an unexpected error. Please check the installed Google Play Services.")
+			.setMessage(message)
 			.setTitle("Google Play services")
 			.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
