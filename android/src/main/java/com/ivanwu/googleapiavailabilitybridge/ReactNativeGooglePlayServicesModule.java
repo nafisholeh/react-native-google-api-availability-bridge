@@ -70,7 +70,7 @@ public class ReactNativeGooglePlayServicesModule extends ReactContextBaseJavaMod
 		
 		if (allowCancel) {
 			builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-				Override
+				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					finish();
 				}
